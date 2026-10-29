@@ -53,7 +53,7 @@ Writes `benchmark/integrity.csv`, `timing.csv`, `stego_timing.csv`, `avalanche.c
 2. Backblaze B2: create a private bucket in EU Central and an application key limited to that bucket. Set `S3_BUCKET`, `S3_ENDPOINT_URL` (`https://s3.<region>.backblazeb2.com`), `S3_REGION` (for example `eu-central-003`), `S3_ACCESS_KEY_ID` (the keyID), `S3_SECRET_ACCESS_KEY` (the applicationKey).
 3. Render: new Web Service from this repo.
    - Build command: `./build.sh`
-   - Start command: `uv run gunicorn config.wsgi --timeout 120`
+   - Start command: `uv run --no-sync gunicorn config.wsgi --timeout 120`
    - Env: everything in `.env.example`, with `DEBUG=False` and no `ALLOWED_HOSTS` needed (Render sets `RENDER_EXTERNAL_HOSTNAME`).
 
 Never change `MASTER_KEY` after users exist. Every stored file becomes unrecoverable.
