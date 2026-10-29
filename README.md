@@ -54,6 +54,6 @@ Writes `benchmark/integrity.csv`, `timing.csv`, `stego_timing.csv`, `avalanche.c
 3. Render: new Web Service from this repo.
    - Build command: `./build.sh`
    - Start command: `uv run gunicorn config.wsgi --timeout 120`
-   - Env: everything in `.env.example`, with `DEBUG=False` and `ALLOWED_HOSTS=<service>.onrender.com`.
+   - Env: everything in `.env.example`, with `DEBUG=False` and no `ALLOWED_HOSTS` needed (Render sets `RENDER_EXTERNAL_HOSTNAME`).
 
 Never change `MASTER_KEY` after users exist. Every stored file becomes unrecoverable.
