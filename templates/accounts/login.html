@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}Sign in · Hybrid Secure Cloud Storage{% endblock %}
+{% block main_class %}page narrow{% endblock %}
+{% block content %}
+<h1>Sign in</h1>
+<p class="muted">Password first, then a code from your authenticator app.</p>
+{% include 'form_errors.html' %}
+<form method="post" class="stack">
+  {% csrf_token %}
+  {% for field in form %}{% include 'field.html' %}{% endfor %}
+  <button class="primary" type="submit">Continue</button>
+</form>
+<p class="muted">No account? <a href="{% url 'accounts:register' %}">Create one</a>.</p>
+{% endblock %}

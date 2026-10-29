@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Set up two-factor · Hybrid Secure Cloud Storage{% endblock %}
+{% block main_class %}page narrow{% endblock %}
+{% block content %}
+<h1>Set up two-factor authentication</h1>
+<ol class="steps">
+  <li>Open Google Authenticator, Microsoft Authenticator or Authy.</li>
+  <li>Scan this code.</li>
+  <li>Enter the 6-digit code the app shows.</li>
+</ol>
+<div class="qr">{{ qr_svg|safe }}</div>
+<p class="muted">Can't scan? Enter this key manually: <code>{{ secret }}</code></p>
+{% include 'form_errors.html' %}
+<form method="post" class="stack">
+  {% csrf_token %}
+  {% include 'field.html' with field=form.code %}
+  <button class="primary" type="submit">Verify and finish</button>
+</form>
+{% endblock %}
