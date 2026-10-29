@@ -130,25 +130,25 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 
 
-# Encrypted file segments go to Cloudflare R2 when configured, local disk otherwise.
+# Encrypted file segments go to S3-compatible storage (Backblaze B2) when configured, local disk otherwise.
 
-R2_BUCKET = os.getenv('R2_BUCKET')
+S3_BUCKET = os.getenv('S3_BUCKET')
 
 STORAGES = {
     'default': {
         'BACKEND': 'storages.backends.s3.S3Storage',
         'OPTIONS': {
-            'bucket_name': R2_BUCKET,
-            'endpoint_url': os.getenv('R2_ENDPOINT_URL'),
-            'access_key': os.getenv('R2_ACCESS_KEY_ID'),
-            'secret_key': os.getenv('R2_SECRET_ACCESS_KEY'),
-            'region_name': 'auto',
+            'bucket_name': S3_BUCKET,
+            'endpoint_url': os.getenv('S3_ENDPOINT_URL'),
+            'access_key': os.getenv('S3_ACCESS_KEY_ID'),
+            'secret_key': os.getenv('S3_SECRET_ACCESS_KEY'),
+            'region_name': os.getenv('S3_REGION'),
             'signature_version': 's3v4',
             'default_acl': None,
             'querystring_auth': True,
         },
     }
-    if R2_BUCKET
+    if S3_BUCKET
     else {
         'BACKEND': 'django.core.files.storage.FileSystemStorage',
         'OPTIONS': {'location': BASE_DIR / 'media'},

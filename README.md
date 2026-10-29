@@ -31,7 +31,7 @@ uv run python manage.py migrate
 uv run python manage.py runserver
 ```
 
-Without `DATABASE_URL` it uses SQLite. Without `R2_BUCKET` it stores segments in `./media`.
+Without `DATABASE_URL` it uses SQLite. Without `S3_BUCKET` it stores segments in `./media`.
 
 ## Checks
 
@@ -47,10 +47,10 @@ uv run python manage.py benchmark --trials 100
 
 Writes `benchmark/integrity.csv`, `timing.csv`, `stego_timing.csv`, `avalanche.csv` and `key_recovery.csv`.
 
-## Deploy (Render + Neon + Cloudflare R2)
+## Deploy (Render + Neon + Backblaze B2)
 
 1. Neon: create a project, copy the pooled connection string into `DATABASE_URL`.
-2. Cloudflare R2: create a bucket and an API token with object read and write. Set `R2_BUCKET`, `R2_ENDPOINT_URL` (`https://<account-id>.r2.cloudflarestorage.com`), `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`.
+2. Backblaze B2: create a private bucket in EU Central and an application key limited to that bucket. Set `S3_BUCKET`, `S3_ENDPOINT_URL` (`https://s3.<region>.backblazeb2.com`), `S3_REGION` (for example `eu-central-003`), `S3_ACCESS_KEY_ID` (the keyID), `S3_SECRET_ACCESS_KEY` (the applicationKey).
 3. Render: new Web Service from this repo.
    - Build command: `./build.sh`
    - Start command: `uv run gunicorn config.wsgi --timeout 120`
