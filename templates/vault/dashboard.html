@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block title %}My files · Hybrid Secure Cloud Storage{% endblock %}
+{% block content %}
+<section class="upload">
+  <h1>My files</h1>
+  <form method="post" action="{% url 'vault:upload' %}" enctype="multipart/form-data" class="upload-form">
+    {% csrf_token %}
+    <input type="file" name="file" required aria-label="File to encrypt and upload">
+    <button class="primary" type="submit">Encrypt and upload</button>
+  </form>
+  <p class="muted">Up to {{ limit_mb }} MB. Each file is split three ways: 60% AES-256, 25% RC6, 15% DES with metadata.</p>
+</section>
+
+{% if files %}
+<table class="files">
+  <thead>
+    <tr><th>Name</th><th>Size</th><th>Encrypted in</th><th>Uploaded</th><th><span class="sr-only">Actions</span></th></tr>
+  </thead>
+  <tbody>
+    {% for file in files %}
+    <tr>
+      <td class="name">{{ file.name }}<small class="muted mono">SHA-256 {{ file.checksum|truncatechars:17 }}</small></td>
+      <td data-label="Size">{{ file.size|filesizeformat }}</td>
+      <td data-label="Encrypted in">{{ file.encrypt_ms|floatformat:0 }} ms</td>
+      <td data-label="Uploaded">{{ file.created_at|date:"j M Y, H:i" }}</td>
+      <td>
+        <div class="actions">
+          <a href="{% url 'vault:download' file.pk %}">Download</a>
+          <form method="post" action="{% url 'vault:delete' file.pk %}">
+            {% csrf_token %}
+            <button class="link danger" type="submit">Delete</button>
+          </form>
+        </div>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<div class="empty">
+  <p><strong>No files yet.</strong></p>
+  <p class="muted">Upload a file above. It is encrypted before it reaches cloud storage.</p>
+</div>
+{% endif %}
+{% endblock %}
